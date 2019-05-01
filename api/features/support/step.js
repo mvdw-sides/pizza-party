@@ -1,17 +1,27 @@
 const { Given, When, Then } = require("cucumber");
 const _ = require("underscore");
 
-const exceptionList = ["createdAt", "updatedAt"];
+const exceptionList = {
+  basic: ["createdAt", "updatedAt"],
+  strict: ["id", "guid"]
+};
 
-const cleanUp = object => {
-  console.log(typeof object, object);
+const cleanUp = (object, options = { strict: false, additions: [] }) => {
   let response;
   if (Array.isArray(object)) {
     response = [];
     response = object.map(cleanUp);
   } else {
     response = { ...object };
-    exceptionList.forEach(exception => delete response[exception]);
+    let exceptions = [...exceptionList.basic];
+    if (options.strict) {
+      exceptions = [...exceptions, ...exceptionList.strict];
+    }
+    if (options.additions) {
+      exceptions = [...exceptions, ...options.additions];
+    }
+
+    exceptions.forEach(exception => delete response[exception]);
   }
 
   return response;

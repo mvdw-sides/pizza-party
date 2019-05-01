@@ -1,7 +1,11 @@
 import Sequelize from "sequelize";
 import { Address } from "./Address";
+import Order from "./orders";
+import Product from "./products";
+import ProductVariation from "./productvariations";
+import OrderProduct from "./orderproducts";
 
-let imports = [Address];
+let imports = [Address, Order, Product, ProductVariation, OrderProduct];
 const models = {};
 
 const env = process.env.NODE_ENV || "production";
