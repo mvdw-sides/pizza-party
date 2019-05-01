@@ -1,19 +1,21 @@
 import Koa from "koa";
-import cors from "@koa/cors";
 
-import { Address } from "./models";
+// import { Address } from "./models";
 
 // console.log(db.models.Address);
 
-Address.create({
-  firstName: "Matti"
-});
+// Address.create({
+//   firstName: "Matti"
+// });
 
 const app = new Koa();
-app.use(cors);
 app.use(ctx => {
-  ctx.body = "Hello Koa!";
+  ctx.status = 200;
+  ctx.body = "Hello Koa! <3";
 });
 
-console.log("running");
-module.exports = app.callback(process.env.PORT || 7002);
+if (process.env.NODE_ENV === "test") {
+  module.exports = app.callback(process.env.PORT || 7002);
+} else {
+  app.listen(7002);
+}

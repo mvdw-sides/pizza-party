@@ -51,10 +51,11 @@ services:
       - 'data-backend-volume:/var/lib/postgresql/data'
     environment:
       NODE_ENV: development
-
+      PORT: "7002"
     networks:
-      - data-backend-network
       - pizza-network
+      - data-backend-network
+      
   db:
     image: postgres
     ports:
