@@ -1,0 +1,71 @@
+version: '3'
+services:
+  # nginx server for proxy
+  nginx:
+    image: 'mattivdweem/pizza-party-nginx:latest'
+    depends_on:
+      - api
+      - platform
+    build:
+      context: ./nginx
+      dockerfile: config/docker/dev.Dockerfile
+    volumes:
+      - './nginx/nginx.conf:/etc/nginx/nginx.conf'
+      - './nginx/snippets:/etc/nginx/snippets'
+      - './nginx/certs:/etc/ssl/certs'
+    ports:
+      - '80:80'
+      - '8080:8080'
+      - '443:443'
+    environment:
+      NODE_ENV: development
+    networks:
+      - pizza-network
+
+  # node.js service for api
+  platform:
+    image: 'mattivdweem/pizza-party-platform:latest'
+    build:
+      context: ./platform
+      dockerfile: config/docker/dev.Dockerfile
+    volumes:
+      - './platform:/usr/src/app'
+      - './platform/node_modules/:/usr/src/app/node_modules/'
+    environment:
+      NODE_ENV: development
+    networks:
+      - pizza-network
+
+  # next.js service for react front-end
+  api:
+    image: 'mattivdweem/pizza-party-api:latest'
+    build:
+      context: ./api
+      dockerfile: config/docker/dev.Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - './api:/usr/src/app'
+      - './api/node_modules/:/usr/src/app/node_modules/'
+      - 'data-backend-volume:/var/lib/postgresql/data'
+    environment:
+      NODE_ENV: development
+    networks:
+      - pizza-network
+      - data-backend-network
+  db:
+    image: postgres
+    ports:
+      - "54320:5432" # run on 54320 instead of 5432 to avoid collission on host system, this row can be removed after development.
+
+
+# pre-defined networking
+networks:
+  pizza-network:
+    driver: bridge
+  data-backend-network:
+
+# generated volumes
+volumes:
+  data-backend-volume:
+

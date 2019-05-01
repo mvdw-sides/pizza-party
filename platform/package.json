@@ -1,0 +1,20 @@
+{
+  "name": "pizza-party-platform",
+  "version": "1.0.0",
+  "description": "My Pizza Platform",
+  "main": "index.js",
+  "repository": "https://github.com/mvdw-sides/pizza-party",
+  "author": "Matti van de Weem <mvdweem@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}

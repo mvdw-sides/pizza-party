@@ -1,0 +1,26 @@
+{
+  "name": "pizza-party-api",
+  "version": "1.0.0",
+  "description": "The rest api for the pizza party webapp",
+  "main": "lib/index.js",
+  "repository": "https://github.com/mvdw-sides/pizza-party",
+  "author": "Matti van de Weem <mvdweem@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "serve:watch": "nodemon --exec babel-node src/index.js ",
+    "serve": "babel-node index.js ",
+    "build": "babel src -d lib"
+  },
+  "dependencies": {
+    "@koa/cors": "2",
+    "koa": "^2.7.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.4",
+    "nodemon": "^1.18.11"
+  }
+}
