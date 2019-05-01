@@ -29,9 +29,11 @@
     "@babel/core": "^7.4.4",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.4",
+    "axios": "^0.18.0",
     "chai": "^4.2.0",
     "cucumber": "^5.1.0",
     "nodemon": "^1.18.11",
-    "sequelize-cli": "^5.4.0"
+    "sequelize-cli": "^5.4.0",
+    "underscore": "^1.9.1"
   }
 }

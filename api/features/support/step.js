@@ -1,16 +1,67 @@
 const { Given, When, Then } = require("cucumber");
+const _ = require("underscore");
 
-When("I increment the variable by {int}", function(int) {
-  // Write code here that turns the phrase above into concrete actions
-  return Promise.resolve();
+const exceptionList = ["createdAt", "updatedAt"];
+
+const cleanUp = object => {
+  let response;
+  if (Array.isArray(object)) {
+    response = [];
+    response = object.map(cleanup);
+  } else {
+    response = { ...object };
+    exceptionList.forEach(exception => delete response[exception]);
+  }
+
+  return response;
+};
+
+Given("the client provides the header {string}", function(header) {
+  const [key, value] = header.split(":");
+  this.headers[key] = value;
+  return true;
 });
 
-Then("the variable should contain {int}", function(int) {
-  // Write code here that turns the phrase above into concrete actions
-  return Promise.resolve();
+When("the client does a GET request to {string}", async function(path) {
+  try {
+    const request = await this.get(path);
+    return true;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
 });
 
-Given("a variable set to {int}", function(int) {
-  // Write code here that turns the phrase above into concrete actions
-  return Promise.resolve();
+const isJson = ob => {
+  try {
+    const obj = JSON.parse(ob);
+    return obj;
+  } catch (e) {
+    return false;
+  }
+};
+
+Then("the response body should be:", function(expectedBody) {
+  try {
+    const expected = isJson(expectedBody);
+    if (expected) {
+      if (!_.isEqual(cleanUp(expected), cleanUp(expectedBody))) {
+        throw Error(`Body did not match.`);
+      }
+
+      return Promise.resolve();
+    }
+
+    if (expectedBody === this.response.data) {
+      return Promise.resolve();
+    }
+
+    throw Error(`"${this.response.data}" did not match "${expectedBody}"`);
+  } catch (e) {
+    return Promise.reject(e);
+  }
+});
+
+Then("the response status code should be {int}", function(status) {
+  return status === this.response.status;
 });

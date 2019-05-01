@@ -15,7 +15,7 @@ app.use(ctx => {
 });
 
 if (process.env.NODE_ENV === "test") {
-  module.exports = app.callback(process.env.PORT || 7002);
+  module.exports = app.callback(process.env.PORT || 7004);
 } else {
   app.listen(7002);
 }

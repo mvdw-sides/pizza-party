@@ -1,21 +1,13 @@
-Feature: Simple maths
-  In order to do maths
+Feature: Retrieve addresses
+  In order to test the flow
   As a developer
-  I want to increment variables
+  I want to do this piece of magix
 
-  Scenario: easy maths
-    Given a variable set to 1
-    When I increment the variable by 1
-    Then the variable should contain 2
-
-  Scenario Outline: much more complex stuff
-    Given a variable set to <var>
-    When I increment the variable by <increment>
-    Then the variable should contain <result>
-
-    Examples:
-      | var | increment | result |
-      | 100 |         5 |    105 |
-      |  99 |      1234 |   1333 |
-      |  12 |         5 |     17 |
-
+ Scenario: Getting user information for an user
+    Given the client provides the header "Content-Type: application/json"
+    When the client does a GET request to "/addresses"
+    Then the response status code should be 200
+    And the response body should be:
+      """json
+      {}
+      """
