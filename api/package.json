@@ -10,17 +10,26 @@
   "scripts": {
     "serve:watch": "nodemon --exec babel-node src/index.js ",
     "serve": "babel-node index.js ",
-    "build": "babel src -d lib"
+    "build": "babel src -d lib",
+    "s": "node_modules/.bin/sequelize",
+    "test": "NODE_ENV=development CLI=true yarn build ; yarn test:cucumber",
+    "test:cucumber": "node_modules/.bin/cucumber-js"
   },
   "dependencies": {
     "@koa/cors": "2",
-    "koa": "^2.7.0"
+    "koa": "^2.7.0",
+    "pg": "^7.10.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^5.8.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.4",
-    "nodemon": "^1.18.11"
+    "chai": "^4.2.0",
+    "cucumber": "^5.1.0",
+    "nodemon": "^1.18.11",
+    "sequelize-cli": "^5.4.0"
   }
 }

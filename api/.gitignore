@@ -1,3 +1,9 @@
+# output
+
+lib
+lib/
+lib/*
+
 # Logs
 logs
 *.log

@@ -2,10 +2,21 @@
 
 var _koa = _interopRequireDefault(require("koa"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _cors = _interopRequireDefault(require("@koa/cors"));
 
-var app = new _koa["default"]();
-app.use(function (ctx) {
-  ctx.body = "Hello Koa";
+var _models = require("./models");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// console.log(db.models.Address);
+_models.Address.create({
+  firstName: "Matti"
 });
-app.listen(7002);
+
+const app = new _koa.default();
+app.use(_cors.default);
+app.use(ctx => {
+  ctx.body = "Hello Koa!";
+});
+console.log("running");
+module.exports = app.listen(process.env.PORT || 7002);
