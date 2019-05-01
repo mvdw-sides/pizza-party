@@ -28,5 +28,6 @@ script/start
 | NGINX    | `80/443` | `all`            | Map domains to services    |
 | API      |  `7002*` | `api.local.test` | Rest API                   |
 | Platform |  `3000*` | `local.test`     | front-end nextjs react app |
+| DB       |  `54320` | `-`              | Postgres database          |
 
 > `*` Not exposed outside Docker network
