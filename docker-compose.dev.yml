@@ -57,12 +57,16 @@ services:
     image: postgres
     ports:
       - "54320:5432" # run on 54320 instead of 5432 to avoid collission on host system, this row can be removed after development.
+    networks:
+      - data-backend-network
 
 
 # pre-defined networking
 networks:
+  # the nginx network for proxy
   pizza-network:
     driver: bridge
+  # the databackend, to access databases
   data-backend-network:
 
 # generated volumes
