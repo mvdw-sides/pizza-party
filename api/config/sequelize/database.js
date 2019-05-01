@@ -11,8 +11,9 @@ module.exports = {
   test: {
     username: "postgres",
     password: null,
-    database: "",
-    host: "db:5432",
+    database: "pizza-party-test-database",
+    host: process.env.CLI ? "127.0.0.1" : "db",
+    port: process.env.CLI ? 54320 : 5432,
     dialect: "postgres"
   },
   production: {

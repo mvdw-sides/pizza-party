@@ -12,7 +12,9 @@
     "serve": "babel-node index.js ",
     "build": "babel src -d lib",
     "s": "node_modules/.bin/sequelize",
-    "test": "NODE_ENV=development CLI=true yarn build ; yarn test:cucumber",
+    "s:test": "NODE_ENV=test node_modules/.bin/sequelize",
+    "db:cycle": "yarn s:test db:drop 2> /dev/null; yarn s:test db:create; yarn s:test db:migrate",
+    "test": "NODE_ENV=test yarn build; yarn db:cycle 2> /dev/null ; yarn test:cucumber",
     "test:cucumber": "node_modules/.bin/cucumber-js"
   },
   "dependencies": {

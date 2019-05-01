@@ -63,7 +63,7 @@ services:
       - data-backend-network
     environment:
       POSTGRES_DB: "pizza-party-database"
-      
+
 
 
 # pre-defined networking

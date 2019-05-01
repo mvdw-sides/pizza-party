@@ -16,4 +16,4 @@ app.use(ctx => {
 });
 
 console.log("running");
-module.exports = app.listen(process.env.PORT || 7002);
+module.exports = app.callback(process.env.PORT || 7002);
