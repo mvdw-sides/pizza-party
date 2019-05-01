@@ -11,7 +11,7 @@ import Koa from "koa";
 const app = new Koa();
 app.use(ctx => {
   ctx.status = 200;
-  ctx.body = "Hello Koa! <3";
+  ctx.body = { hello: "world" };
 });
 
 if (process.env.NODE_ENV === "test") {

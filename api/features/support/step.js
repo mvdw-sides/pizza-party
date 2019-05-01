@@ -4,10 +4,11 @@ const _ = require("underscore");
 const exceptionList = ["createdAt", "updatedAt"];
 
 const cleanUp = object => {
+  console.log(typeof object, object);
   let response;
   if (Array.isArray(object)) {
     response = [];
-    response = object.map(cleanup);
+    response = object.map(cleanUp);
   } else {
     response = { ...object };
     exceptionList.forEach(exception => delete response[exception]);
@@ -24,7 +25,7 @@ Given("the client provides the header {string}", function(header) {
 
 When("the client does a GET request to {string}", async function(path) {
   try {
-    const request = await this.get(path);
+    await this.get(path);
     return true;
   } catch (e) {
     console.log(e);
@@ -35,18 +36,23 @@ When("the client does a GET request to {string}", async function(path) {
 const isJson = ob => {
   try {
     const obj = JSON.parse(ob);
-    return obj;
+    return [true, obj];
   } catch (e) {
-    return false;
+    return [false];
   }
 };
 
 Then("the response body should be:", function(expectedBody) {
   try {
-    const expected = isJson(expectedBody);
-    if (expected) {
-      if (!_.isEqual(cleanUp(expected), cleanUp(expectedBody))) {
-        throw Error(`Body did not match.`);
+    const [isJSONObject, expected] = isJson(expectedBody);
+
+    if (isJSONObject && typeof this.response.data !== "string") {
+      if (!_.isEqual(cleanUp(this.response.data), cleanUp(expected))) {
+        throw Error(
+          `${JSON.stringify(
+            cleanUp(this.response.data)
+          )} Body did not match. ${JSON.stringify(cleanUp(expected))}`
+        );
       }
 
       return Promise.resolve();
