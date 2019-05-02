@@ -12,7 +12,9 @@ export class Product extends Sequelize.Model {
   }
 
   static associate(models) {
-    Product.hasMany(models.ProductVariation);
+    Product.hasMany(models.ProductVariation, {
+      foreignKey: "productId"
+    });
   }
 }
 

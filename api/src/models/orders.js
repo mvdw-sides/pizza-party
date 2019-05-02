@@ -14,7 +14,13 @@ export class Order extends Sequelize.Model {
   }
 
   static associate(models) {
-    Order.hasOne(models.Address);
+    Order.hasOne(models.Address, {
+      foreignKey: "addressId"
+    });
+
+    Order.hasMany(models.OrderProduct, {
+      foreignKey: "orderId"
+    });
   }
 }
 

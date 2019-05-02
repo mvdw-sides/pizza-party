@@ -16,6 +16,14 @@ module.exports = {
           key: "id"
         }
       },
+      orderId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Orders",
+          key: "id"
+        }
+      },
       variationId: {
         type: Sequelize.INTEGER,
         allowNull: false,

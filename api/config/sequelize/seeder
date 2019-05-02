@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for filename in ./seeders/*.js; do
+  yarn s db:seed --seed $filename
+done

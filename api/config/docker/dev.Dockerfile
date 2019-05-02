@@ -9,7 +9,6 @@ COPY config ./config
 COPY .sequelizerc ./.sequelizerc
 COPY migrations ./migrations
 COPY seeders ./seeders
-COPY features ./features
 
 RUN ls .
 

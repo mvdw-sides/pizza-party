@@ -16,7 +16,11 @@ export class Address extends Sequelize.Model {
     );
   }
 
-  static associate(models) {}
+  static associate(models) {
+    Address.belongsTo(models.Order, {
+      foreignKey: "addressId"
+    });
+  }
 }
 
 export default Address;

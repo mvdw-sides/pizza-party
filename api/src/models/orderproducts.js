@@ -6,6 +6,7 @@ export class OrderProduct extends Sequelize.Model {
       {
         productId: DataTypes.INTEGER,
         variationId: DataTypes.INTEGER,
+        orderI: DataTypes.INTEGER,
         price: DataTypes.INTEGER,
         quantity: DataTypes.INTEGER
       },
@@ -14,7 +15,9 @@ export class OrderProduct extends Sequelize.Model {
   }
 
   static associate(models) {
-    OrderProduct.belongsTo(models.Order);
+    OrderProduct.belongsTo(models.Order, {
+      foreignKey: "orderId"
+    });
   }
 }
 

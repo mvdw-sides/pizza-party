@@ -13,11 +13,44 @@
     "build": "babel src -d lib",
     "s": "node_modules/.bin/sequelize",
     "s:test": "NODE_ENV=test node_modules/.bin/sequelize",
-    "db:cycle": "yarn s:test db:drop 2> /dev/null; yarn s:test db:create; yarn s:test db:migrate",
-    "test": "NODE_ENV=test yarn build; yarn db:cycle 2> /dev/null ; yarn test:cucumber",
-    "test:cucumber": "node_modules/.bin/cucumber-js"
+    "s:seed": "./config/sequelize/seeder",
+    "s:test:seed": "./config/sequelize/seeder",
+    "db:cycle": "yarn s:test db:drop 2> /dev/null; yarn s:test db:create; yarn s:test db:migrate; yarn s:test db:seed:all",
+    "test": "yarn db:cycle && NODE_ENV=test yarn build; jest"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js}",
+      "!**/node_modules/**",
+      "!**/lib/**",
+      "!**/coverage/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "coverageReporters": [
+      "text",
+      "text-summary"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)x?$",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/lib/",
+      "/coverage/"
+    ]
   },
   "dependencies": {
+    "@hapi/boom": "^7.4.2",
     "@koa/cors": "2",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
@@ -32,9 +65,10 @@
     "@babel/preset-env": "^7.4.4",
     "axios": "^0.18.0",
     "chai": "^4.2.0",
-    "cucumber": "^5.1.0",
+    "jest": "^24.7.1",
     "nodemon": "^1.18.11",
     "sequelize-cli": "^5.4.0",
+    "supertest": "^4.0.2",
     "underscore": "^1.9.1"
   }
 }

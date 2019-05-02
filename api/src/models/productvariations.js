@@ -14,7 +14,9 @@ export class ProductVariation extends Sequelize.Model {
   }
 
   static associate(models) {
-    ProductVariation.belongsTo(models.Product);
+    ProductVariation.belongsTo(models.Product, {
+      foreignKey: "productId"
+    });
   }
 }
 
