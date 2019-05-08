@@ -24,7 +24,7 @@ function Home() {
             fontWeight: 100
           }}
         >
-          Or order some other crap
+          Or order one of the others
         </h4>
         <div
           style={{

@@ -13,8 +13,8 @@ export default class Hero extends Component {
     return (
       <Box className={css.hero}>
         <Box className={css.hero__titles} align="center">
-          <Heading level={1}>Lame pizza title</Heading>
-          <Heading level={3}>Why we love the lame pizza title</Heading>
+          <Heading level={1}>Pizza Party</Heading>
+          <Heading level={3}>The only party is a pizza party</Heading>
         </Box>
 
         <Box className={css.blocks}>
