@@ -7,9 +7,18 @@ import css from "./hero.scss";
 export default class Hero extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      products: props.products || []
+    };
   }
 
+  componentWillReceiveProps(props) {
+    if (this.state.products.length !== props.products.length) {
+      this.setState({ products: props.products });
+    }
+  }
   render() {
+    const { products } = this.state;
     return (
       <Box className={css.hero}>
         <Box className={css.hero__titles} align="center">
@@ -18,10 +27,11 @@ export default class Hero extends Component {
         </Box>
 
         <Box className={css.blocks}>
-          {[1, 2, 4].map(idx => (
+          {products.map(product => (
             <FeatureBlock
-              key={idx}
-              onClick={() => this.props.onSelectProduct(idx)}
+              key={product.id}
+              product={product}
+              onClick={() => this.props.onSelectProduct(product.id)}
             />
           ))}
         </Box>

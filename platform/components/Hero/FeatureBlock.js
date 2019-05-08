@@ -1,12 +1,23 @@
 import React, { Component } from "react";
 
 import css from "./featureBlock.scss";
+
 export default class FeatureBlock extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      product: props.product || {}
+    };
+  }
+
+  componentWillReceiveProps(props) {
+    if (this.state.product.id !== props.product.id) {
+      this.setState({ product: props.product });
+    }
   }
 
   render() {
+    const { product } = this.state;
     return (
       <div
         className={css.block}
@@ -21,8 +32,8 @@ export default class FeatureBlock extends Component {
           }}
         />
         <div className={css.description}>
-          <h5>Some product</h5>
-          <span>Some product description</span>
+          <h5>{product.name}</h5>
+          <span>{product.description}</span>
         </div>
       </div>
     );

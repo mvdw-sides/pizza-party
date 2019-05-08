@@ -1,55 +1,80 @@
-import { Link, Router } from "../routes";
-
 import FeatureBlock from "../components/Hero/FeatureBlock";
 import Hero from "../components/Hero";
 import React from "react";
-import css from "../assets/style/global.scss";
+import { Router } from "../routes";
+import axios from "axios";
+class Home extends React.Component {
+  static async getInitialProps({ query, req }) {
+    try {
+      const api = !!req ? "http://api:7002" : "http://api.local.test";
+      const { data: products } = await axios.get(`${api}/products`);
 
-function Home() {
-  return (
-    <div>
-      <div>
-        <Hero
-          onSelectProduct={id =>
-            Router.pushRoute("product", { product: id.toString() })
-          }
-        />
-      </div>
+      return { ...query, products };
+    } catch (e) {
+      console.log(e);
+      throw Error(e);
+    }
+  }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: props.products || []
+    };
+  }
+
+  render() {
+    const { products } = this.state;
+    let prod = [...products];
+    const heroProducts = prod.splice(0, 3);
+
+    return (
       <div>
-        <h4
-          style={{
-            width: "100%",
-            textAlign: "center",
-            fontWeight: 100
-          }}
-        >
-          Or order one of the others
-        </h4>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "flex-start"
-          }}
-        >
-          {[1, 2, 4, 5, 6, 7, 8].map(idx => (
-            <FeatureBlock
-              key={idx}
-              onClick={() =>
-                Router.pushRoute("product", { id: idx.toString() })
-              }
-              style={{
-                margin: "20px 2%",
-                width: "21%",
-                height: "100px"
-              }}
-            />
-          ))}
+        <div>
+          <Hero
+            products={heroProducts}
+            onSelectProduct={id =>
+              Router.pushRoute("product", { product: id.toString() })
+            }
+          />
+        </div>
+
+        <div>
+          <h4
+            style={{
+              width: "100%",
+              textAlign: "center",
+              fontWeight: 100
+            }}
+          >
+            Or order one of the others
+          </h4>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "flex-start"
+            }}
+          >
+            {prod.map((product, idx) => (
+              <FeatureBlock
+                key={`overview_${idx}`}
+                onClick={() =>
+                  Router.pushRoute("product", { id: product.id.toString() })
+                }
+                product={product}
+                style={{
+                  margin: "20px 2%",
+                  width: "21%",
+                  height: "100px"
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Home;
