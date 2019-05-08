@@ -21,6 +21,14 @@ The [script](https://github.com/github/scripts-to-rule-them-all) folder contains
 script/start
 ```
 
+#### Database
+
+The server will do a full migration, but if needed you can re-migrate, create and seed by
+
+```
+script/db
+```
+
 #### Services
 
 | Service  |    Ports | Domain           | Purpose                    |

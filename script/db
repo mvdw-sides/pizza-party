@@ -4,6 +4,6 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-docker exec -it $(docker ps | grep api | awk '{ print $1 }') /bin/sh -c 'yarn s db:create'
+docker exec -it $(docker ps | grep api | awk '{ print $1 }') /bin/sh -c 'yarn s db:create' 2>&1 > ./error.log || echo "db exists, skipping"
 docker exec -it $(docker ps | grep api | awk '{ print $1 }') /bin/sh -c 'yarn s db:migrate'
 docker exec -it $(docker ps | grep api | awk '{ print $1 }') /bin/sh -c 'yarn s:seed'
