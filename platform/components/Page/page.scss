@@ -1,0 +1,24 @@
+body {
+    background: #FBFBFB;
+}
+
+.page {
+    display: flex;
+
+    &__centered {
+        flex-direction: column;
+        justify-items: center;
+        align-content: center;
+        align-items: center;
+    }
+
+    &__fixed_width {
+        // width: 1200px;
+   
+    }
+
+    .container {
+        // width: 1200px;
+   
+    }
+}

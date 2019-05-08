@@ -4,13 +4,14 @@ FROM node:10
 WORKDIR /usr/src/app
 
 # Installing dependencies
-COPY package*.json ./
+COPY . .
 
 RUN ls -la .
 RUN rm -rf node_modules
 RUN yarn add node-sass
 RUN npm rebuild --update-binary
 RUN yarn --pure-lockfile
+RUN yarn build
 
 
 # Running the app

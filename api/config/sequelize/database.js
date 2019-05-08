@@ -17,10 +17,11 @@ module.exports = {
     dialect: "postgres"
   },
   production: {
-    username: "root",
+    username: "postgres",
     password: null,
-    database: "database_production",
-    host: "127.0.0.1",
+    database: "pizza-party-database-production",
+    host: process.env.CLI ? "127.0.0.1" : "db",
+    port: process.env.CLI ? 54320 : 5432,
     dialect: "postgres"
   }
 };

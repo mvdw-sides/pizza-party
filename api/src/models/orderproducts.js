@@ -6,7 +6,7 @@ export class OrderProduct extends Sequelize.Model {
       {
         productId: DataTypes.INTEGER,
         variationId: DataTypes.INTEGER,
-        orderI: DataTypes.INTEGER,
+        orderId: DataTypes.INTEGER,
         price: DataTypes.INTEGER,
         quantity: DataTypes.INTEGER
       },

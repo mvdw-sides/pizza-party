@@ -1,5 +1,6 @@
 import { Product, ProductVariation } from "../../models";
-const Boom = require("@hapi/boom");
+
+import Boom from "@hapi/boom";
 
 export default async ({ id }) => {
   // list of pre-defined attributes we'll fetch from the database

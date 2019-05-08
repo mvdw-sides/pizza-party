@@ -1,29 +1,60 @@
+import { Order, Product } from "./Controllers";
+
 import Koa from "koa";
 import Router from "koa-router";
+import bodyParser from "koa-bodyparser";
 import cors from "@koa/cors";
-import { Products, Product } from "./Controllers";
 
 const app = new Koa();
 const router = new Router();
 
-const response = (body, ctx) => {
+const response = (body, ctx, status) => {
   if (body.isBoom) {
     ctx.body = body.output.payload;
     ctx.status = body.output.statusCode;
   } else {
     ctx.body = body;
+    if (status) {
+      ctx.status = status;
+    }
   }
   return ctx;
 };
 
 router.get("/products", async (ctx, next) => {
-  const products = await Products.receive();
-  ctx.body = products;
+  const products = await Product.list(ctx.request.query);
+  ctx = response(products, ctx, 200);
 });
 
 router.get("/products/:id", async (ctx, next) => {
-  const product = await Product.receive({ id: ctx.params.id });
-  ctx = response(product, ctx);
+  const product = await Product.retrieve({ id: ctx.params.id });
+  ctx = response(product, ctx, 200);
+});
+
+// orders
+router.get("/orders", async (ctx, next) => {
+  const product = await Order.list(ctx.request.query);
+  ctx = response(product, ctx, 200);
+});
+
+router.post("/orders", async (ctx, next) => {
+  const product = await Order.create(ctx.request.body);
+  ctx = response(product, ctx, 201);
+});
+
+router.get("/orders/:id", async (ctx, next) => {
+  const product = await Order.retrieve({ id: ctx.params.id });
+  ctx = response(product, ctx, 200);
+});
+
+router.put("/orders/:id", async (ctx, next) => {
+  const product = await Order.update({ id: ctx.params.id }, ctx.request.body);
+  ctx = response(product, ctx, 200);
+});
+
+router.delete("/orders/:id", async (ctx, next) => {
+  const product = await Order.remove({ id: ctx.params.id });
+  ctx = response(product, ctx, 200);
 });
 
 ////////////////
@@ -70,7 +101,9 @@ router.get("/products/:id", async (ctx, next) => {
 // `/products`      : GET
 // `/products/{id}` : GET
 
-app.use(router.routes());
+app.use(bodyParser());
+
 app.use(cors());
+app.use(router.routes());
 
 module.exports = app;

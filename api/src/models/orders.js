@@ -14,8 +14,8 @@ export class Order extends Sequelize.Model {
   }
 
   static associate(models) {
-    Order.hasOne(models.Address, {
-      foreignKey: "addressId"
+    Order.belongsTo(models.Address, {
+      foreignKey: "id"
     });
 
     Order.hasMany(models.OrderProduct, {

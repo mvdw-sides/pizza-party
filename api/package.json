@@ -9,7 +9,7 @@
   "private": false,
   "scripts": {
     "serve:watch": "yarn build; nodemon --exec babel-node src/index.js ",
-    "serve": "yarn build; babel-node index.js ",
+    "serve": "node lib/index.js",
     "build": "babel src -d lib",
     "s": "node_modules/.bin/sequelize",
     "s:test": "NODE_ENV=test node_modules/.bin/sequelize",
@@ -53,10 +53,12 @@
     "@hapi/boom": "^7.4.2",
     "@koa/cors": "2",
     "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "pg": "^7.10.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^5.8.1"
+    "sequelize": "^5.8.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
