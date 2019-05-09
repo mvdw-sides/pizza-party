@@ -5,6 +5,7 @@ import {
   Button,
   Form,
   FormField,
+  Heading,
   Meter,
   ResponsiveContext,
   Table,
@@ -163,6 +164,7 @@ class Product extends Component {
                   align="center"
                   justify="center"
                 >
+                  <Heading level={4}>Order status:</Heading>
                   <Text>{order.status}</Text>
                   <Meter
                     type="circle"
