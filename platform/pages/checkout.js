@@ -122,7 +122,7 @@ class Checkout extends Component {
                       e.preventDefault();
                       const { guid } = this.submit(e, orderContext.list);
                       orderContext.set([]);
-                      Router.push("orders", { id: guid });
+                      Router.pushRoute("order", { id: guid });
                     }}
                   >
                     <FormField name="firstName" label="First Name" />
