@@ -5,6 +5,7 @@ import {
   Button,
   Form,
   FormField,
+  Meter,
   ResponsiveContext,
   Table,
   TableBody,
@@ -18,6 +19,45 @@ import React, { Component } from "react";
 
 import { Deliver } from "grommet-icons";
 import { OrderConsumer } from "../components/order.context";
+
+const getLabels = status => {
+  const value = {
+    submitted: 0,
+    preparing: 1,
+    delivering: 2,
+    delivered: 3
+  }[status];
+
+  const response = [
+    {
+      value: 10,
+      color: "neutral-1",
+      highlight: false,
+      label: "Submitted"
+    },
+    {
+      value: 20,
+      color: value > 0 ? "neutral-2" : "#eee",
+      highlight: false,
+      label: "Preparing"
+    },
+    {
+      value: 30,
+      color: value > 1 ? "brand" : "#eee",
+      highlight: false,
+      label: "Under way"
+    },
+    {
+      value: 40,
+      color: "accent-1",
+      color: value > 2 ? "accent-1" : "#eee",
+      highlight: false,
+      label: "Delivered"
+    }
+  ];
+
+  return response;
+};
 
 class Product extends Component {
   static async getInitialProps({ query, req }) {
@@ -45,7 +85,6 @@ class Product extends Component {
     if (!order) {
       return <div />;
     }
-    console.log(order);
     const products = order.OrderProducts;
     return (
       <OrderConsumer>
@@ -121,8 +160,28 @@ class Product extends Component {
                   }}
                   background="white"
                   elevation="small"
+                  align="center"
+                  justify="center"
                 >
                   <Text>{order.status}</Text>
+                  <Meter
+                    type="circle"
+                    round
+                    size="small"
+                    margin="medium"
+                    values={
+                      order.status === "cancelled"
+                        ? [
+                            {
+                              value: 100,
+                              color: "status-error",
+                              highlight: false,
+                              label: "Cancelled"
+                            }
+                          ]
+                        : getLabels(order.status)
+                    }
+                  />
                 </Box>
                 <Form
                   onSubmit={async e => {
@@ -137,7 +196,6 @@ class Product extends Component {
                 >
                   <Box
                     flex
-                    wrap="wrap"
                     direction="row"
                     justify="around"
                     pad="small"
@@ -202,6 +260,11 @@ class Product extends Component {
                         icon={<Deliver size="small" />}
                         label="Update order"
                         type="submit"
+                        disabled={[
+                          "delivered",
+                          "cancelled",
+                          "delivering"
+                        ].includes(order.status)}
                       />
                     </Box>
                   </Box>

@@ -5,6 +5,7 @@ import {
   Button,
   Form,
   FormField,
+  Meter,
   ResponsiveContext,
   Table,
   TableBody,
@@ -17,7 +18,6 @@ import React, { Component } from "react";
 
 import { OrderConsumer } from "../components/order.context";
 import { Router } from "../routes";
-import css from "../assets/style/global.scss";
 
 class Checkout extends Component {
   constructor(props) {
@@ -120,9 +120,9 @@ class Checkout extends Component {
                   <Form
                     onSubmit={async e => {
                       e.preventDefault();
-                      const { guid } = this.submit(e, orderContext.list);
+                      const { guid } = await this.submit(e, orderContext.list);
                       orderContext.set([]);
-                      Router.pushRoute("order", { id: guid });
+                      Router.pushRoute("order", { guid });
                     }}
                   >
                     <FormField name="firstName" label="First Name" />
