@@ -15,6 +15,10 @@
     &:nth-child(2) {
         width: 38%;
         height: 200px;
+
+        div {
+            font-size: 1.5em;
+        }
     }
 
     &:hover {
@@ -34,11 +38,12 @@
 
         &.description {
             margin: 10px 15px 5px 15px;
-            font-size: .8em;
+            font-size: .6em;
             overflow: hidden;
+            line-height: 1.4em;
 
             h5 {
-                font-size: 1em;
+                font-size: 1.1em;
                 padding: 0px 0px 5px 0;
                 margin: 0px 0px 5px 0;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.1);
