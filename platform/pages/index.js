@@ -33,9 +33,7 @@ class Home extends React.Component {
         <div>
           <Hero
             products={heroProducts}
-            onSelectProduct={id =>
-              Router.pushRoute("product", { product: id.toString() })
-            }
+            onSelectProduct={id => Router.pushRoute("product", { id })}
           />
         </div>
 

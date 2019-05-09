@@ -31,7 +31,7 @@ export default class Hero extends Component {
             <FeatureBlock
               key={product.id}
               product={product}
-              onClick={() => this.props.onSelectProduct(product.id)}
+              onClick={() => this.props.onSelectProduct(product.id.toString())}
             />
           ))}
         </Box>

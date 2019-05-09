@@ -21,7 +21,6 @@ class Product extends Component {
     try {
       const api = !!req ? "http://api:7002" : "http://api.local.test";
       const { data: product } = await axios.get(`${api}/products/${query.id}`);
-      console.log(product);
 
       return { ...query, product };
     } catch (e) {
@@ -36,7 +35,7 @@ class Product extends Component {
     this.state = {
       product: props.product || {},
       quantity: 1,
-      selected: props.product.ProductVariations[0]
+      selected: props.product.ProductVariations[0] || {}
     };
   }
 
