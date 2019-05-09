@@ -14,15 +14,16 @@ import React, { Component } from "react";
 
 import { Basket } from "grommet-icons";
 import { OrderConsumer } from "../components/order.context";
-import css from "../assets/style/global.scss";
+import { getRandomImage } from "../components/pizzaImage";
 
 class Product extends Component {
   static async getInitialProps({ query, req }) {
     try {
       const api = !!req ? "http://api:7002" : "http://api.local.test";
       const { data: product } = await axios.get(`${api}/products/${query.id}`);
+      const image = getRandomImage();
 
-      return { ...query, product };
+      return { ...query, product, image };
     } catch (e) {
       console.log(e);
       throw Error(e);
@@ -35,12 +36,13 @@ class Product extends Component {
     this.state = {
       product: props.product || {},
       quantity: 1,
-      selected: props.product.ProductVariations[0] || {}
+      selected: props.product.ProductVariations[0] || {},
+      submit: false
     };
   }
 
   render() {
-    const { quantity, product, selected } = this.state;
+    const { quantity, product, selected, submit } = this.state;
     const options = product.ProductVariations;
 
     return (
@@ -62,10 +64,7 @@ class Product extends Component {
                       pad="small"
                       overflow="hidden"
                     >
-                      <Image
-                        fit="contain"
-                        src="https://images.unsplash.com/photo-1553241682-134de3623bb9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&h=400&q=80"
-                      />
+                      <Image fit="contain" src={this.props.image} />
                     </Box>
                     <Box pad="medium" fill>
                       <Markdown>{product.description}</Markdown>
@@ -124,20 +123,35 @@ class Product extends Component {
                   />
 
                   <Box pad={{ vertical: "large" }} align="center">
-                    <Button
-                      icon={<Basket size="small" />}
-                      label="Put in basket"
-                      onClick={() => {
-                        orderContext.add({
-                          id: `${product.id}.${selected.id}`,
-                          name: `${product.name} - ${selected.name}`, // the name
-                          quantity, // the amount
-                          pricePerItem: selected.price, // just for displaying sake
-                          productId: product.id, // we need the original product id
-                          variationId: selected.id // we need the variation
-                        });
-                      }}
-                    />
+                    {submit ? (
+                      <Box
+                        animation="slideUp"
+                        background="brand"
+                        width="medium"
+                        round="medium"
+                        pad="small"
+                        align="center"
+                        justify="center"
+                      >
+                        <Text>Added to cart!</Text>
+                      </Box>
+                    ) : (
+                      <Button
+                        icon={<Basket size="small" />}
+                        label="Put in basket"
+                        onClick={() => {
+                          orderContext.add({
+                            id: `${product.id}.${selected.id}`,
+                            name: `${product.name} - ${selected.name}`, // the name
+                            quantity, // the amount
+                            pricePerItem: selected.price, // just for displaying sake
+                            productId: product.id, // we need the original product id
+                            variationId: selected.id // we need the variation
+                          });
+                          this.setState({ submit: true });
+                        }}
+                      />
+                    )}
                   </Box>
                 </Box>
               </Box>

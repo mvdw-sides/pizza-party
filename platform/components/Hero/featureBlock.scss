@@ -18,6 +18,16 @@
 
         div {
             font-size: 1.5em;
+
+            &.description {
+                h5 {
+                    font-size: 1.1em;
+                }
+
+                p {
+                    max-lines: 8;
+                }
+            }
         }
     }
 
@@ -38,12 +48,17 @@
 
         &.description {
             margin: 10px 15px 5px 15px;
-            font-size: .6em;
+            font-size: .7em;
             overflow: hidden;
             line-height: 1.4em;
 
+            p {
+                max-lines: 3;
+                font-size: 1em;
+            }
+
             h5 {
-                font-size: 1.1em;
+                font-size: .9em;
                 padding: 0px 0px 5px 0;
                 margin: 0px 0px 5px 0;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.1);

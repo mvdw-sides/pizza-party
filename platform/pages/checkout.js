@@ -16,6 +16,7 @@ import { Deliver, FormClose } from "grommet-icons";
 import React, { Component } from "react";
 
 import { OrderConsumer } from "../components/order.context";
+import { Router } from "../routes";
 import css from "../assets/style/global.scss";
 
 class Checkout extends Component {
@@ -23,6 +24,22 @@ class Checkout extends Component {
     super(props);
 
     this.state = {};
+    this.submit = this.submit.bind(this);
+  }
+
+  async submit(event, products) {
+    event.preventDefault();
+    const object = { address: event.value };
+
+    object.products = products.map(product => {
+      return { id: product.variationId, quantity: product.quantity };
+    });
+
+    const { data: response } = await axios.post(
+      "http://api.local.test/orders",
+      object
+    );
+    return response;
   }
 
   render() {
@@ -100,19 +117,26 @@ class Checkout extends Component {
                   background="white"
                   elevation="small"
                 >
-                  <Form>
-                    <FormField name="firstname" label="First Name" />
-                    <FormField name="lastname" label="Last Name" />
+                  <Form
+                    onSubmit={async e => {
+                      e.preventDefault();
+                      const { guid } = this.submit(e, orderContext.list);
+                      orderContext.set([]);
+                      Router.push("orders", { id: guid });
+                    }}
+                  >
+                    <FormField name="firstName" label="First Name" />
+                    <FormField name="lastName" label="Last Name" />
                     <FormField name="city" label="City" />
                     <FormField name="street" label="Street" />
                     <FormField name="address" label="address" />
-                    <FormField name="zip" label="Postalcode" />
+                    <FormField name="zipCode" label="Postalcode" />
                     <FormField name="phone" label="Phone" />
                     <Box pad={{ vertical: "large" }} align="center">
                       <Button
                         icon={<Deliver size="small" />}
                         label="Place order"
-                        onClick={() => {}}
+                        type="submit"
                       />
                     </Box>
                   </Form>

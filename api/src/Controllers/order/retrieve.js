@@ -1,4 +1,10 @@
-import { Address, Order, OrderProduct } from "../../models";
+import {
+  Address,
+  Order,
+  OrderProduct,
+  Product,
+  ProductVariation
+} from "../../models";
 
 import Boom from "@hapi/boom";
 import { where } from "../../Utils/general";
@@ -6,7 +12,10 @@ import { where } from "../../Utils/general";
 export default async ({ id }) => {
   const order = await Order.findOne({
     where: where(id),
-    include: [OrderProduct, Address]
+    include: [
+      { model: OrderProduct, include: [ProductVariation, Product] },
+      Address
+    ]
   });
 
   if (!order) {

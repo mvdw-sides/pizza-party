@@ -62,8 +62,8 @@ class Home extends React.Component {
                 }
                 product={product}
                 style={{
-                  margin: "20px 2%",
-                  width: "21%",
+                  margin: "20px 1%",
+                  width: "22%",
                   height: "100px"
                 }}
               />

@@ -18,6 +18,16 @@ export class OrderProduct extends Sequelize.Model {
     OrderProduct.belongsTo(models.Order, {
       foreignKey: "orderId"
     });
+
+    OrderProduct.hasOne(models.ProductVariation, {
+      sourceKey: "variationId",
+      foreignKey: "id"
+    });
+
+    OrderProduct.hasOne(models.Product, {
+      sourceKey: "productId",
+      foreignKey: "id"
+    });
   }
 }
 
