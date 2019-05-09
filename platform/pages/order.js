@@ -8,13 +8,15 @@ import {
   Heading,
   Meter,
   ResponsiveContext,
+  Select,
   Table,
   TableBody,
   TableCell,
   TableFooter,
   TableHeader,
   TableRow,
-  Text
+  Text,
+  TextInput
 } from "grommet";
 import React, { Component } from "react";
 
@@ -79,6 +81,23 @@ class Product extends Component {
     this.state = {
       order: props.order || null
     };
+
+    this.submit = this.submit.bind(this);
+  }
+
+  async submit(event, products, orderId) {
+    event.preventDefault();
+    const object = { address: event.value };
+
+    object.products = products.map(product => {
+      return { id: product.ProductVariation.id, quantity: product.quantity };
+    });
+
+    const { data: response } = await axios.put(
+      `http://api.local.test/orders/${orderId}`,
+      object
+    );
+    return response;
   }
 
   render() {
@@ -87,6 +106,7 @@ class Product extends Component {
       return <div />;
     }
     const products = order.OrderProducts;
+    let totalPrice = 0;
     return (
       <OrderConsumer>
         {orderContext => (
@@ -117,23 +137,57 @@ class Product extends Component {
                       </TableHeader>
                       <TableBody>
                         {products.map((record, idx) => {
+                          let price =
+                            record.ProductVariation.price * record.quantity;
+                          totalPrice += price;
                           return (
                             <TableRow key={idx}>
                               <TableCell scope="row">
                                 {record.Product.name}
                               </TableCell>
                               <TableCell scope="row">
-                                {record.ProductVariation.name}
+                                <Select
+                                  value={record.ProductVariation.name}
+                                  options={record.Product.ProductVariations.map(
+                                    o => (
+                                      <Box key={o.id} fill>
+                                        <Text>
+                                          {o.name} (${o.price / 100})
+                                        </Text>
+                                      </Box>
+                                    )
+                                  )}
+                                  onChange={({ value }) => {
+                                    const filtered = record.Product.ProductVariations.filter(
+                                      o => {
+                                        return o.id == value.key;
+                                      }
+                                    );
+                                    if (filtered.length) {
+                                      order.OrderProducts[
+                                        idx
+                                      ].ProductVariation = filtered[0];
+                                      this.setState({ order });
+                                    }
+                                  }}
+                                />
                               </TableCell>
                               <TableCell scope="row">
-                                {record.quantity}
+                                <TextInput
+                                  type="number"
+                                  min={1}
+                                  value={record.quantity}
+                                  onChange={event => {
+                                    order.OrderProducts[idx].quantity =
+                                      event.target.value;
+                                    this.setState({ order });
+                                  }}
+                                />
                               </TableCell>
                               <TableCell scope="row">
                                 ${record.ProductVariation.price / 100}
                               </TableCell>
-                              <TableCell scope="row">
-                                ${record.price / 100}
-                              </TableCell>
+                              <TableCell scope="row">${price / 100}</TableCell>
                             </TableRow>
                           );
                         })}
@@ -145,7 +199,7 @@ class Product extends Component {
                           <TableCell scope="row" />
                           <TableCell scope="row" />
                           <TableCell border="top" scope="row">
-                            <strong>${order.totalPrice / 100}</strong>
+                            <strong>${totalPrice / 100}</strong>
                           </TableCell>
                         </TableRow>
                       </TableFooter>
@@ -188,9 +242,7 @@ class Product extends Component {
                 <Form
                   onSubmit={async e => {
                     e.preventDefault();
-                    const { guid } = this.submit(e, orderContext.list);
-                    orderContext.set([]);
-                    Router.push("orders", { id: guid });
+                    await this.submit(e, products, order.id);
                   }}
                   style={{
                     width: "100%"

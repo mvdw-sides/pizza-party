@@ -13,7 +13,13 @@ export default async ({ id }) => {
   const order = await Order.findOne({
     where: where(id),
     include: [
-      { model: OrderProduct, include: [ProductVariation, Product] },
+      {
+        model: OrderProduct,
+        include: [
+          ProductVariation,
+          { model: Product, include: [ProductVariation] }
+        ]
+      },
       Address
     ]
   });
