@@ -39,3 +39,11 @@ script/db
 | DB       |  `54320` | `-`              | Postgres database          |
 
 > `*` Not exposed outside Docker network
+
+## Screenshots
+
+![Home](./images/home.png)
+![Product](./images/product.png)
+![cart](./images/cart.png)
+![order](./images/order.png)
+![orders](./images/orders.png)
